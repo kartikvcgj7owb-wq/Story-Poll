@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StoryPoll Dashboard</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body{
+    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+    color:white;
+    text-align:center;
+    min-height:100vh;
+}
+
+header{
+    padding:20px;
+    font-size:26px;
+    font-weight:bold;
+}
+
+.logout-btn{
+    position:absolute;
+    top:20px;
+    right:20px;
+    padding:8px 15px;
+    border:none;
+    border-radius:20px;
+    background:#ff4b2b;
+    color:white;
+    cursor:pointer;
+}
+
+.container{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:40px;
+    padding:20px;
+}
+
+.form-box{
+    background: rgba(255,255,255,0.1);
+    padding:20px;
+    border-radius:15px;
+    width:300px;
+    backdrop-filter: blur(10px);
+}
+
+.form-box input, .form-box button{
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+    border:none;
+    border-radius:8px;
+}
+
+.form-box button{
+    background:#00c6ff;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.story-box{
+    width:320px;
+    height:550px;
+    border-radius:25px;
+    overflow:hidden;
+    position:relative;
+    background:#000;
+    background-size:cover;
+    background-position:center;
+    box-shadow:0 0 25px rgba(0,0,0,0.8);
+}
+
+.overlay{
+    position:absolute;
+    bottom:0;
+    width:100%;
+    padding:20px;
+    background: linear-gradient(transparent,rgba(0,0,0,0.8));
+}
+
+.poll-btn{
+    display:block;
+    width:100%;
+    padding:12px;
+    margin:8px 0;
+    border-radius:25px;
+    border:none;
+    font-size:16px;
+    cursor:pointer;
+}
+
+#btn1{ background:#00c6ff; }
+#btn2{ background:#f7797d; }
+
+.result{
+    font-size:14px;
+    margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<script>
+if(localStorage.getItem("loggedIn") !== "true"){
+    window.location.href = "login.html";
+}
+</script>
+
+<header>🔥 Welcome to StoryPoll 🔥</header>
+<button class="logout-btn" onclick="logout()">Logout</button>
+
+<div class="container">
+
+<div class="form-box">
+    <input type="file" id="imageInput">
+    <input type="text" id="question" placeholder="Enter Question">
+    <input type="text" id="opt1" placeholder="Option 1">
+    <input type="text" id="opt2" placeholder="Option 2">
+    <button onclick="createPoll()">Create Story</button>
+</div>
+
+<div class="story-box" id="story">
+    <div class="overlay">
+        <h3 id="pollQuestion"></h3>
+        <button class="poll-btn" id="btn1" onclick="vote(1)"></button>
+        <button class="poll-btn" id="btn2" onclick="vote(2)"></button>
+        <div class="result" id="result"></div>
+    </div>
+</div>
+
+</div>
+
+<script>
+let votes1 = 0;
+let votes2 = 0;
+
+function createPoll(){
+    let file = document.getElementById("imageInput").files[0];
+    let reader = new FileReader();
+
+    reader.onload = function(e){
+        document.getElementById("story").style.backgroundImage =
+        "url('" + e.target.result + "')";
+    }
+
+    if(file){
+        reader.readAsDataURL(file);
+    }
+
+    document.getElementById("pollQuestion").innerText =
+        document.getElementById("question").value;
+
+    document.getElementById("btn1").innerText =
+        document.getElementById("opt1").value;
+
+    document.getElementById("btn2").innerText =
+        document.getElementById("opt2").value;
+
+    votes1 = 0;
+    votes2 = 0;
+    document.getElementById("result").innerText = "";
+}
+
+function vote(option){
+    if(option === 1){
+        votes1++;
+    } else {
+        votes2++;
+    }
+
+    let total = votes1 + votes2;
+    let percent1 = ((votes1/total)*100).toFixed(1);
+    let percent2 = ((votes2/total)*100).toFixed(1);
+
+    document.getElementById("result").innerText =
+        btn1.innerText + ": " + percent1 + "% | " +
+        btn2.innerText + ": " + percent2 + "%";
+}
+
+function logout(){
+    localStorage.removeItem("loggedIn");
+    window.location.href = "login.html";
+}
+</script>
+
+</body>
+</html>
