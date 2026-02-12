@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login - StoryPoll</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background: linear-gradient(135deg,#141e30,#243b55);
+    font-family:sans-serif;
+}
+
+.box{
+    background:rgba(255,255,255,0.1);
+    padding:30px;
+    width:300px;
+    border-radius:15px;
+    color:white;
+    text-align:center;
+}
+
+input,button{
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+    border:none;
+    border-radius:8px;
+}
+
+button{
+    background:#ff416c;
+    color:white;
+    font-weight:bold;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+<h2>StoryPoll Login 🔥</h2>
+
+<input type="text" id="username" placeholder="Username">
+<input type="password" id="password" placeholder="Password">
+
+<button onclick="login()">Login</button>
+<button onclick="register()">Register</button>
+</div>
+
+<script>
+function register(){
+    let user = username.value;
+    let pass = password.value;
+
+    if(user==""||pass==""){
+        alert("Fill all fields");
+        return;
+    }
+
+    localStorage.setItem("user",user);
+    localStorage.setItem("pass",pass);
+    alert("Registration Successful!");
+}
+
+function login(){
+    let user = username.value;
+    let pass = password.value;
+
+    if(user === localStorage.getItem("user") &&
+       pass === localStorage.getItem("pass")){
+        
+        localStorage.setItem("loggedIn","true");
+        window.location.href = "index.html"; // Redirect
+    } else {
+        alert("Wrong Credentials");
+    }
+}
+</script>
+
+</body>
+</html>
